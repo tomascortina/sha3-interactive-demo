@@ -13,9 +13,7 @@ import {
 } from '@/components/ui/card';
 
 export function SpeedComparison() {
-    const [text, setText] = useState(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    );
+    const [text, setText] = useState('');
     const [iterations, setIterations] = useState(1000);
     const [results, setResults] = useState<{
         sha2Time: number;
@@ -223,7 +221,7 @@ export function SpeedComparison() {
                                 </Card>
                             </div>
 
-                            <Card className="bg-gradient-to-r from-orange-950/50 to-red-950/50 border-orange-800/50">
+                            <Card className="bg-blue-950/30 border-blue-800/50">
                                 <CardHeader>
                                     <CardTitle className="text-xl text-orange-400">
                                         Análisis
@@ -253,26 +251,13 @@ export function SpeedComparison() {
                                         de SHA3-256.
                                     </p>
                                     <p className="text-sm text-slate-400 pt-2">
-                                        Esta diferencia de velocidad es la razón
-                                        por la cual SHA-2 sigue siendo el
-                                        estándar de facto en muchos sistemas.
-                                        Sin embargo, SHA-3 ofrece ventajas
-                                        estructurales importantes (como
-                                        resistencia al ataque de extensión de
-                                        longitud) que justifican su uso en
-                                        ciertos contextos.
+                                        Esta diferencia de velocidad es una de
+                                        las razones por la cual SHA-2 sigue
+                                        siendo el estándar de facto en muchos
+                                        sistemas. Sin embargo, SHA-3 ofrece
+                                        ventajas estructurales importantes que
+                                        justifican su uso en ciertos contextos.
                                     </p>
-                                </CardContent>
-                            </Card>
-
-                            <Card className="bg-slate-950 border-slate-700">
-                                <CardContent className="pt-6">
-                                    <canvas
-                                        ref={canvasRef}
-                                        width="600"
-                                        height="250"
-                                        className="w-full"
-                                    />
                                 </CardContent>
                             </Card>
 
