@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 export default function SHA3Page() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-gray-100 scroll-smooth">
-            <header className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800 shadow-2xl">
+            <header className="top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800 shadow-2xl">
                 <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
                     <div className="text-center space-y-3">
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
