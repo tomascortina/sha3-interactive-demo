@@ -28,47 +28,65 @@ export function SpeedComparison() {
 
     async function runBenchmark() {
         setLoading(true);
-
         try {
-            const data = new TextEncoder().encode(text);
-
-            // Import libraries dynamically
+            const data = new TextEncoder().encode(text || 'benchmark');
             const [{ sha256 }, { sha3_256 }] = await Promise.all([
                 import('js-sha256'),
                 import('js-sha3'),
             ]);
 
-            // Benchmark SHA-256
-            const sha2Start = performance.now();
-            for (let i = 0; i < iterations; i++) {
-                sha256(data);
-            }
-            const sha2End = performance.now();
-            const sha2Time = sha2End - sha2Start;
+            const iters = Math.max(2000, iterations);
+            const warmup = 300;
+            const rounds = 5;
 
-            // Benchmark SHA3-256
-            const sha3Start = performance.now();
-            for (let i = 0; i < iterations; i++) {
-                sha3_256(data);
+            function measure(fn: (d: Uint8Array) => unknown) {
+                for (let i = 0; i < warmup; i++) fn(data);
+                const t0 = performance.now();
+                for (let i = 0; i < iters; i++) fn(data);
+                return performance.now() - t0;
             }
-            const sha3End = performance.now();
-            const sha3Time = sha3End - sha3Start;
 
-            const sha2Ops = Math.round(iterations / (sha2Time / 1000));
-            const sha3Ops = Math.round(iterations / (sha3Time / 1000));
-            const ratio = sha3Time / sha2Time;
-            const percentSlower = ((sha3Time - sha2Time) / sha2Time) * 100;
+            const sha2Times: number[] = [];
+            const sha3Times: number[] = [];
+
+            for (let r = 0; r < rounds; r++) {
+                if (r % 2 === 0) {
+                    sha2Times.push(measure(sha256 as any));
+                    await new Promise(requestAnimationFrame);
+                    sha3Times.push(measure(sha3_256 as any));
+                } else {
+                    sha3Times.push(measure(sha3_256 as any));
+                    await new Promise(requestAnimationFrame);
+                    sha2Times.push(measure(sha256 as any));
+                }
+                await new Promise(requestAnimationFrame);
+            }
+
+            const median = (arr: number[]) => {
+                const a = [...arr].sort((x, y) => x - y);
+                const n = a.length;
+                return n % 2 ? a[(n - 1) / 2] : (a[n / 2 - 1] + a[n / 2]) / 2;
+            };
+
+            const sha2Time = Number(median(sha2Times).toFixed(2));
+            const sha3Time = Number(median(sha3Times).toFixed(2));
+            const sha2Ops = Math.round(iters / (sha2Time / 1000));
+            const sha3Ops = Math.round(iters / (sha3Time / 1000));
+            const ratio = Number((sha3Time / sha2Time).toFixed(2));
+            const percentSlower = Number(
+                (((sha3Time - sha2Time) / sha2Time) * 100).toFixed(1)
+            );
 
             setResults({
-                sha2Time: Number.parseFloat(sha2Time.toFixed(2)),
-                sha3Time: Number.parseFloat(sha3Time.toFixed(2)),
+                sha2Time,
+                sha3Time,
                 sha2Ops,
                 sha3Ops,
-                ratio: Number.parseFloat(ratio.toFixed(2)),
-                percentSlower: Number.parseFloat(percentSlower.toFixed(1)),
+                ratio,
+                percentSlower,
             });
-        } catch (error) {
-            console.error('Error:', error);
+        } catch (e) {
+            console.error(e);
             alert('Ocurrió un error durante el benchmark.');
         } finally {
             setLoading(false);
