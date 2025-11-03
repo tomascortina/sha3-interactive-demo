@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { IntroSection } from '@/components/sha3/intro-section';
 import { SpongeAnimated } from '@/components/sha3/sponge-animated';
 import { SpongePhases } from '@/components/sha3/sponge-phases';
@@ -8,15 +9,28 @@ import { SpeedComparison } from '@/components/sha3/speed-comparison';
 import { LengthExtensionAttack } from '@/components/sha3/length-extension-attack';
 import { AvalancheEffect } from '@/components/sha3/avalanche-effect';
 import { Separator } from '@/components/ui/separator';
+import { Github } from 'lucide-react';
 
 export default function SHA3Page() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-gray-100 scroll-smooth">
             <header className="top-0 z-50 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800 shadow-2xl">
-                <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
+                <div className="relative max-w-7xl mx-auto px-4 py-6 md:py-8">
+                    <div className="absolute right-1 top-6 md:top-8">
+                        <Link
+                            href="https://github.com/tomascortina/sha3-interactive-demo"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Abrir repositorio en GitHub"
+                            className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:border-slate-600 transition-colors shadow-lg"
+                        >
+                            <Github className="h-4 w-4" />
+                            <span className="hidden sm:inline">GitHub</span>
+                        </Link>
+                    </div>
                     <div className="text-center space-y-3">
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                            SHA-3: Análisis Comparativo Completo
+                            SHA-3: Análisis Comparativo
                         </h1>
                         <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
                             Demostraciones interactivas de fortalezas y
